@@ -3,8 +3,13 @@ const express = require("express");
 const mongoose = require('mongoose');
 const app = express();
 const todoRoutes = require('./routes/todos');
-
+const cors = require('cors');
 const PORT = process.env.PORT || 3000;
+
+
+
+app.use(cors())
+
 
 // Middleware to parse JSON
 app.use(express.json());
