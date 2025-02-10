@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require('mongoose');
 const app = express();
 const todoRoutes = require('./routes/todos');
+const userRoutes = require('./routes/user')
 const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 
 // routes
 app.use('/api/todos/', todoRoutes);
+app.use('/api/user/', userRoutes);
 
 
 

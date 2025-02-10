@@ -1,124 +1,111 @@
-import { useEffect, useState } from "react";
-import axios from 'axios'
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-const API_URL = "https://todolist-pluralcode-backend.onrender.com/api/todos/";
-// const API_URL = "http://localhost:8000/api/todos/";
+const API_URL = "https://todolist-pluralcode-backend.onrender.com/api/todos";
 
 export default function Home() {
-    const [todos, setTodos] = useState([]);
-    const [newTodo, setNewTodo] = useState("");
-    const [refresh, setRefresh] = useState(0)
-    const [title, setTitle] = useState("")
+  const [todos, setTodos] = useState([]);
+  const [title, setTitle] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [editingId, setEditingId] = useState(null);
 
-    const [formData, setFormData] = useState({
-        title: "",
-        completed: false,
-        deadline: "No dealine",
-    });
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
-    // const { title, completed, deadline } = formData;
+  const fetchTodos = async () => {
+    const response = await axios.get(API_URL);
+    setTodos(response.data);
+  };
 
-    const handleChange = (e) => {
-        e.preventDefault();
-        setTitle( e.target.value );
-    };
-
-    useEffect(() => {
-        axios.get(API_URL)
-            .then(res => {
-                setTodos(res.data)
-            })
-            .catch(err => console.log(err))
-    }, [refresh]);
-
-    // const addTodo = async () => {
-    //     if (!newTodo.trim()) return;
-    //     try {
-    //         await fetch(API_URL, {
-    //             method: "POST",
-    //             headers: { "Content-Type": "application/json" },
-    //             body: JSON.stringify({ title: newTodo })
-    //         });
-    //         setNewTodo("");
-    //         fetchTodos();
-    //     } catch (error) {
-    //         console.error("Error adding todo:", error);
-    //     }
-    // };
-
-
-    const addTodo = (e) => {
-        e.preventDefault();
-        if (title) {
-            setFormData({...formData, title })
-            axios.post(API_URL, formData)
-                .then(res => {
-                    setTodos([...todos, res.data]);
-                    setTitle("");
-
-                })
-                .catch(err => console.log(err))
-        }
-    };
-
-
-
-    const deleteTodo = async (id) => {
-        console.log(id)
-
-        axios.delete(`${API_URL}/${id}`)
-        .then(res => {
-           console.log('DELETD RECORD::::', res)
-
-        })
-        .catch(err => console.log(err))
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const todo = { title, deadline: deadline || null, completed: false };
     
-    };
+    if (editingId) {
+      await axios.delete(`${API_URL}/${editingId}`);
+      await axios.post(API_URL, todo);
+    } else {
+      await axios.post(API_URL, todo);
+    }
+    
+    setTitle("");
+    setDeadline("");
+    setEditingId(null);
+    fetchTodos();
+  };
 
-    return (
-        <div className="container">
-        
-            <div className="p-6 max-w-md mx-auto">
+  const handleDelete = async (id) => {
+    await axios.delete(`${API_URL}/${id}`);
+    fetchTodos();
+  };
+
+  const handleEdit = (todo) => {
+    setTitle(todo.title);
+    setDeadline(todo.deadline || "");
+    setEditingId(todo._id);
+  };
+
+  const toggleCompletion = async (todo) => {
+    await axios.patch(`${API_URL}/${todo._id}`, { ...todo, completed: !todo.completed });
+    fetchTodos();
+  };
+
+  return (
+    <div className="container mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Todo App</h1>
+      <form onSubmit={handleSubmit} className="space-y-2">
+        <input
+          type="text"
+          placeholder="Task Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          className="w-full p-2 border rounded"
+        />
+        <input
+          type="date"
+          value={deadline}
+          onChange={(e) => setDeadline(e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+        <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">{editingId ? "Update" : "Add"} Task</button>
+      </form>
+      <h2>Task Lists</h2>
+      <table class="table">
+        <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Deadline</th>
+              <th scope="col">Completed</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>           
+            {todos.map((todo) => (
+              <tr key={todo._id}>
+                <td className={todo.completed ? "line-through" : ""}>{todo.title}</td>
+                <td className="text-red-500 text-sm">{todo.deadline ? todo.deadline : "No Deadline"}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => toggleCompletion(todo)}
+                  />
+                </td>
                 
-                <div className="flex gap-2 mb-4">
-                    <form>
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={handleChange}
-                            placeholder="New todo..."
-                            className="border p-2 w-full"
-                        />
-                        <input
-                            type="submit"  
-                            value='Add'
-                            onClick={addTodo} 
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
-                        />
-                    </form>
-                </div>
-                                        
-                <h2 className="text-xl font-bold mb-4">Todo List</h2>
-                {todos.map((todo) => (
-                    <div key={todo._id} className="mb-2 flex justify-between items-center p-2 border rounded">
-                        <span>{todo.title}</span>
-                        <button 
-                            onClick={() => deleteTodo(todo._id)} 
-                            className="bg-red-500 text-white px-2 py-1 rounded">
-                            Delete
-                        </button>
-                        <button 
-                            type="submit" 
-                            className="btn btn-primary" 
-                            onClick={() => {handleUpdate()}}>
-                            Update
-                        </button>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+                <td>
+                  <button className="" onClick={() => handleEdit(todo)}>Edit</button>
+                </td>
+                <td>
+                  <button className="" onClick={() => handleDelete(todo._id)}>Delete</button>
+                </td>
+                
+              </tr>
+            ))}
+          </tbody>
+      </table>
+    </div>
+  );
 }
-
-
-
