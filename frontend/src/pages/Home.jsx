@@ -93,7 +93,7 @@ export default function Home() {
                         placeholder="Task Title"
                         className="form-control" 
                         value={title}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setTitle(e.target.value)}
                         required
                       />
                   </div>
