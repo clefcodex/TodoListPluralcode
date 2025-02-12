@@ -17,11 +17,6 @@ app.use(cors({
 // Middleware to parse JSON
 app.use(express.json());
 
-// Simple route
-app.get("/", (req, res) => {
-    res.send("Hello, Express!");
-});
-
 
 // routes
 app.use('/api/todos/', todoRoutes);
