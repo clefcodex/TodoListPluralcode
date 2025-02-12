@@ -61,17 +61,17 @@ export default function Home() {
   return (
     <>
       <div className="cointaner">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container">
-            <a class="navbar-brand" href="#">TodoApp</a>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <div className="container">
+            <a className="navbar-brand" href="#">TodoApp</a>
           </div>
-          <div class="container">
+          <div className="container">
             <Link to="/signup" 
               className="btn btn-default border w-100 bg-light rounded-0">
                     Signup
             </Link>
           </div>
-          <div class="container">
+          <div className="container">
           <Link to="/login" 
               className="btn btn-default border w-100 bg-light rounded-0">
                     Login
@@ -84,8 +84,8 @@ export default function Home() {
       <div className="container">
         <h1 className="font-bold mt-4">Todo App</h1> <br />
           <div className="container">
-            <div class="row justify-content-md-start">
-              <div class="col-10 col-md-8 col-lg-6">
+            <div className="row justify-content-md-start">
+              <div className="col-10 col-md-8 col-lg-6">
                 <form onSubmit={handleSubmit}>
                   <div className="form-group">
                       <input 
