@@ -17,8 +17,8 @@ export default function Home() {
                 <div class="col-md-6 hero-content">
                     <h1>Unleash Your Productivity</h1>
                     <p class="lead">Conquer your tasks with our powerful and intuitive task management tool.</p>
-                    <a href="/signup" class="btn btn-primary cta-button">Sign Up Free</a> &nbsp;
-                    <a href="/learnmore" class="btn btn-outline-primary">Learn More</a>
+                    <Link to="/signup"><a class="btn btn-primary cta-button">Sign Up Free</a></Link> &nbsp;
+                    <a class="btn btn-outline-primary">Learn More</a>
                 </div>
                 <div class="col-md-6">
                     <img src={myImage} alt="Task Management Illustration" class="img-fluid" />
