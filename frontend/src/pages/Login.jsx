@@ -54,9 +54,6 @@ const Login = () => {
                     Signup
                 </Link>
                 <p></p>
-                <Link to="/" className="btn btn-default border w-100 bg-light rounded-0">
-                    Back to HomePage
-                </Link>
             </div>
         </div>
     )
