@@ -17,7 +17,7 @@ const Login = () => {
         .then(result => {
             console.log(result)
             if(result.status === 200) {
-                navigate("/");
+                navigate("/ProtectedRoute");
             }
         })
         .catch(err => console.log(err))

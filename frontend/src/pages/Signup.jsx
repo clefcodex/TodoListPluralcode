@@ -16,7 +16,7 @@ const Signup = () => {
         axios.post(API_URL, {email, password})
         .then(result => {
             console.log(result)
-            navigate("/")
+            navigate("/ProtectedRoute")
         })
         .catch(err => console.log(err))
     }

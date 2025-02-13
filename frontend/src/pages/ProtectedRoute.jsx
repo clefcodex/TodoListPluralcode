@@ -67,29 +67,8 @@ export default function ProtectedRoute() {
 
   return (
     <>
-      <div className="cointaner">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <div className="container">
-            <a className="navbar-brand" href="#">TodoApp</a>
-          </div>
-          <div className="container">
-            <Link to="/signup" 
-              className="btn btn-default border w-100 bg-light rounded-0">
-                    Signup
-            </Link>
-          </div>
-          <div className="container">
-          <Link to="/login" 
-              className="btn btn-default border w-100 bg-light rounded-0">
-                    Login
-            </Link>
-          </div>
-        </nav>
-      </div>
-      
-  
       <div className="container">
-        <h1 className="font-bold mt-4">Todo App</h1> <br />
+        <h2 className="font-bold mt-4">Schedule Task</h2> <br />
           <div className="container">
             <div className="row justify-content-md-start">
               <div className="col-10 col-md-8 col-lg-6">
