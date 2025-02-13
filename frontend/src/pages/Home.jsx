@@ -1,155 +1,61 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import './Home.css'
 import { Link } from "react-router-dom";
+import './Home.css'
+import myImage from "../assets/graphic.png"
+// import '../assets/graphic.png'
 
-const API_URL = "https://todolist-pluralcode-backend.onrender.com/api/todos";
 
 export default function Home() {
-  const [todos, setTodos] = useState([]);
-  const [title, setTitle] = useState("");
-  const [deadline, setDeadline] = useState("");
-  const [editingId, setEditingId] = useState(null);
 
-  useEffect(() => {
-    fetchTodos();
-  }, []);
-
-  const fetchTodos = async () => {
-    const response = await axios.get(API_URL);
-    setTodos(response.data);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const todo = { title, deadline: deadline || null, completed: false };
-    
-    if (editingId) {
-      await axios.delete(`${API_URL}/${editingId}`);
-      await axios.post(API_URL, todo);
-    } else {
-      await axios.post(API_URL, todo);
-    }
-    
-    setTitle("");
-    setDeadline("");
-    setEditingId(null);
-    fetchTodos();
-  };
-
-  const handleDelete = async (id) => {
-    await axios.delete(`${API_URL}/${id}`);
-    fetchTodos();
-  };
-
-  const handleEdit = (todo) => {
-    setTitle(todo.title);
-    setDeadline(todo.deadline || "");
-    setEditingId(todo._id);
-  };
-
-  const toggleCompletion = async (todo) => {
-    if(todo.completed) {
-      alert(todo.title)
-      // todo.title.addClass('completed')
-    }
-    await axios.patch(`${API_URL}/${todo._id}`, { ...todo, completed: !todo.completed });
-    
-    fetchTodos();
-  };
 
   return (
     <>
-      <div className="cointaner">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <div className="container">
-            <a className="navbar-brand" href="#">TodoApp</a>
-          </div>
-          <div className="container">
-            <Link to="/signup" 
-              className="btn btn-default border w-100 bg-light rounded-0">
-                    Signup
-            </Link>
-          </div>
-          <div className="container">
-          <Link to="/login" 
-              className="btn btn-default border w-100 bg-light rounded-0">
-                    Login
-            </Link>
-          </div>
-        </nav>
-      </div>
-      
-  
-      <div className="container">
-        <h1 className="font-bold mt-4">Todo App</h1> <br />
-          <div className="container">
-            <div className="row justify-content-md-start">
-              <div className="col-10 col-md-8 col-lg-6">
-                <form onSubmit={handleSubmit}>
-                  <div className="form-group">
-                      <input 
-                        type="text" 
-                        placeholder="Task Title"
-                        className="form-control" 
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                      />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="deadline">Deadline</label>
-                    <input 
-                      type="date" 
-                      placeholder="Today"
-                      className="form-control" 
-                      value={deadline}
-                      onChange={(e) => setDeadline(e.target.value)}
-                    />
-                  </div>
-                  <button type="submit" className="btn btn-success w-100 mt-2">{editingId ? "Update" : "Add"} Task</button>
-                </form>
-              </div>
+     <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 hero-content">
+                    <h1>Unleash Your Productivity</h1>
+                    <p class="lead">Conquer your tasks with our powerful and intuitive task management tool.</p>
+                    <a href="/signup" class="btn btn-primary cta-button">Sign Up Free</a> &nbsp;
+                    <a href="/learnmore" class="btn btn-outline-primary">Learn More</a>
+                </div>
+                <div class="col-md-6">
+                    <img src={myImage} alt="Task Management Illustration" class="img-fluid" />
+                    </div>
             </div>
-          </div>
-        <h2 className="mt-4">Task Lists</h2>
-        <table className="table">
-          <thead>
-              <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Deadline</th>
-                <th scope="col">Completed</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>           
-              {todos.map((todo) => (
-                <tr key={todo._id}>
-                  <td className={todo.completed ? "line-through" : ""}>{todo.title}</td>
-                  <td className="text-red-500 text-sm">{todo.deadline ? todo.deadline : "No Deadline"}</td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={todo.completed}
-                      onChange={() => toggleCompletion(todo)}
-                    />
-                  </td>
-                  
-                  <td>
-                    <button className="btn btn-secondary" onClick={() => handleEdit(todo)}>Edit</button>
-                  </td>
-                  <td>
-                    <button className="btn btn-danger" onClick={() => handleDelete(todo._id)}>Delete</button>
-                  </td>
-                  
-                </tr>
-              ))}
-            </tbody>
-        </table>
-      </div>
+        </div>
+    </section>
+
+    <section class="features py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-tasks feature-icon"></i>
+                    <h3>Effortless Task Management</h3>
+                    <p>Create, organize, and prioritize tasks with ease. Stay on top of your to-do list.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                   <i class="fas fa-users feature-icon"></i>
+                    <h3>Seamless Collaboration</h3>
+                    <p>Work together with your team, share tasks, and track progress seamlessly.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-chart-line feature-icon"></i>
+                    <h3>Visual Progress Tracking</h3>
+                    <p>Monitor your progress with visual dashboards and reports. Stay motivated and focused.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta py-5">
+        <div class="container text-center">
+            <h2>Ready to Get Started?</h2>
+            <p class="lead">Sign up for free and experience the power of our task management tool.</p>
+            <a href="/signup" class="btn btn-primary cta-button">Sign Up Free</a>
+        </div>
+    </section>
     </>
-    
-    
   );
 }
