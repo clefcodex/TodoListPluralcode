@@ -53,7 +53,7 @@ export default function Home() {
         <div class="container text-center">
             <h2>Ready to Get Started?</h2>
             <p class="lead">Sign up for free and experience the power of our task management tool.</p>
-            <a href="/signup" class="btn btn-primary cta-button">Sign Up Free</a>
+            <Link to="/signup"><a class="btn btn-primary cta-button">Sign Up Free</a></Link>
         </div>
     </section>
     </>
